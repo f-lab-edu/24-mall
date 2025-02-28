@@ -1,7 +1,5 @@
 package com.temp.sample.service;
 
-import com.temp.sample.controller.ApiResponse;
-import com.temp.sample.controller.CommonResult;
 import com.temp.sample.dao.ProductRepository;
 import com.temp.sample.entity.Product;
 import com.temp.sample.service.response.ProductResponse;
@@ -9,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
