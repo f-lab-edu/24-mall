@@ -9,8 +9,12 @@ spring:
         username: root
         password: root
     jpa:
-        database-platform: org.hibernate.dialect.MySQLDialect
         open-in-view: false
         show-sql: true
         hibernate:
         ddl-auto: none
+
+logging:
+    level:
+        root: info
+        http.logging: debug
