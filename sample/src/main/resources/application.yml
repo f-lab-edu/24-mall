@@ -12,9 +12,10 @@ spring:
         open-in-view: false
         show-sql: true
         hibernate:
-        ddl-auto: none
+            ddl-auto: none
 
 logging:
     level:
+        org.hibernate.orm.jdbc.bind: trace
         root: info
         http.logging: debug

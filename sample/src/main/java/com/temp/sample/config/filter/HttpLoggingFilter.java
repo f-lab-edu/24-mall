@@ -24,8 +24,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Slf4j
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE) // security filter보다 먼저 실행하기 위해서
+//@Component
+//@Order(Ordered.HIGHEST_PRECEDENCE) // security filter보다 먼저 실행하기 위해서
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
     @Override

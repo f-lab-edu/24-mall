@@ -12,19 +12,28 @@ class ProductControllerTest {
 
     @Test
     void test(){
-        ProductResponse 배송 = createProduct(new ProductRequest(1L, "배송"));
 
-        System.out.println("배송 = " + 배송);
     }
 
-    ProductResponse createProduct(ProductRequest request) {
+
+    @Test
+    void test2() {
+        String product = createProduct();
+        System.out.println("product = " + product);
+    }
+
+    String createProduct() {
         return restClient.post()
-                .uri("/products")
-                .body(request)
-                .retrieve()
-                .body(ProductResponse.class);
+            .uri("/sample")
+            .retrieve()
+            .body(String.class);
     }
 
-
-
+    String createProduct2(ProductRequest request) {
+        return restClient.post()
+            .uri("/sample")
+            .body(request)
+            .retrieve()
+            .body(String.class);
+    }
 }

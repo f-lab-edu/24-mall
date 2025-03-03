@@ -3,7 +3,9 @@ package com.temp.sample.config.filter;
 import jakarta.servlet.*;
 
 import java.io.IOException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BFilter implements Filter {
 
     @Override
