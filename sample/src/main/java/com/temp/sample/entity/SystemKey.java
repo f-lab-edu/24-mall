@@ -4,10 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import lombok.*;
 
 @Table(name = "system_key")
 @Getter
@@ -25,5 +23,14 @@ public class SystemKey {
 
   private Boolean isActive;
 
+
+  public static SystemKey createMock(Long id, String encKey, LocalDateTime createdAt, Boolean isActive) {
+    SystemKey systemKey = new SystemKey();
+    systemKey.id = id;
+    systemKey.encKey = encKey;
+    systemKey.createdAt = createdAt;
+    systemKey.isActive = isActive;
+    return systemKey;
+  }
 
 }

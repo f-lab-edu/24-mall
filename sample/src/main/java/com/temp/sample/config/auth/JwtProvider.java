@@ -33,9 +33,7 @@ public class JwtProvider {
       claims.put("userId", authUser.getUserId());
       claims.put("roles", authUser.getRoles());
 
-
-
-
+      
       SystemKey lastSecretKey = systemKeyRepository.findLastSecretKey();
       SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(lastSecretKey.getEncKey()));
 

@@ -1,14 +1,15 @@
 package com.temp.sample.config.auth;
 
-import java.util.ArrayList;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
 public class AuthUser {
   private final Long userId;
 
-  private final ArrayList<String> roles;
+  private final List<String> roles;
 
 }
