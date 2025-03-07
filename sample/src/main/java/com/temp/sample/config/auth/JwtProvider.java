@@ -47,7 +47,7 @@ public class JwtProvider {
           .issuedAt(new Date())   // iat (Issued At) 클레임 설정
           .expiration(new Date(System.currentTimeMillis() + 3600000))
           .signWith(secretKey)          // 서명 설정 (기본 HS256 사용)
-          .id(String.valueOf(lastSecretKey.getId()))
+//          .id(String.valueOf(lastSecretKey.getId()))
           .compact();             // 최종 JWT 생성
     }
 
