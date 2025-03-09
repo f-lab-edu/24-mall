@@ -27,11 +27,12 @@ public class JwtFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-    if(!request.getRequestURL().toString().endsWith("login")){
+    // 로그인 요청이 아니면 authorization 검사
+    if (!request.getRequestURL().toString().endsWith("login")) {
 
       String token = request.getHeader("Authorization");
 
-      if (StringUtils.isEmpty(token)){
+      if (StringUtils.isEmpty(token)) {
         throw new RuntimeException("Token is empty");
       }
 
@@ -43,7 +44,5 @@ public class JwtFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
 
   }
-
-
 
 }

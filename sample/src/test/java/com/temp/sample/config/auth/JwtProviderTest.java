@@ -1,97 +1,127 @@
 package com.temp.sample.config.auth;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+
 import com.temp.sample.dao.SystemKeyRepository;
 import com.temp.sample.entity.SystemKey;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.ProtectedHeader;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import javax.crypto.SecretKey;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.crypto.SecretKey;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
-
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 class JwtProviderTest {
-    @Mock
-    SystemKeyRepository systemKeyRepository;
 
-    @InjectMocks
-    JwtProvider jwtProvider;
+  @Mock
+  SystemKeyRepository systemKeyRepository;
 
-    @InjectMocks
-    JKeyLocator jKeyLocator;
+  @Mock
+  private ProtectedHeader protectedHeader;
 
+  @InjectMocks
+  JwtProvider jwtProvider;
 
-
-    @Test
-//    @DisplayName("토큰 유효성 검사 테스트")
-    void createLoginToken() {
-
-        given(systemKeyRepository.findLastSecretKey())
-                .willReturn(SystemKey.createMock(1L,"MWE5ZjZiOGMzZDdlNGYyYTVjNmQ5ZTBiN2E0ZjNjMmUK", LocalDateTime.now(),true));
-
-        given(systemKeyRepository.findById(1L))
-                .willReturn(Optional.of(SystemKey.createMock(1L,"MWE5ZjZiOGMzZDdlNGYyYTVjNmQ5ZTBiN2E0ZjNjMmUK", LocalDateTime.now(),true)));
-        // 토큰 생성
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", 1L);
-        claims.put("roles", "admin");
-
-        SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode("MWE5ZjZiOGMzZDdlNGYyYTVjNmQ5ZTBiN2E0ZjNjMmUK"));
-
-        String loginToken = Jwts.builder()
-                .issuer("24-mall")
-                .subject("login")       // sub (Subject) 클레임 설정
-                .header().keyId("24-mall").and() // alg, frm, zip 은 생략 가능
-                .claims(claims) // 주제
-                .audience().add("24-mall").and()
-                .issuedAt(new Date())   // iat (Issued At) 클레임 설정
-                .expiration(new Date(System.currentTimeMillis() + 3600000))
-                .signWith(secretKey)          // 서명 설정 (기본 HS256 사용)
-//          .id(String.valueOf(lastSecretKey.getId()))
-                .compact();// 최종 JWT 생성
-
-        System.out.println("loginToken = " + loginToken);
+  @InjectMocks
+  JKeyLocator jKeyLocator;
 
 
-        Jws<Claims> jws = Jwts.parser()
-                .clockSkewSeconds(180) // 시계오차 오차 허용 시간 설정 3분, 5분이상이면 심각한 문제 -> 생성서버와 검증서버 시간차
-                .requireSubject("login") // 추가 검증.
-                .requireIssuer("24-mall")
-                .requireAudience("24-mall")
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(loginToken);  // JWT 파싱
+  @Test
+  @DisplayName("토큰 읽기 예외 테스트")
+  void exceptionTest() {
 
-        System.out.println("jws.getPayload() = " + jws.getPayload());
+    given(systemKeyRepository.findLastSecretKey())
+        .willReturn(createMockSystemKey());
 
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("userId", 1L);
+    claims.put("roles", "admin");
 
+    SecretKey secretKey = Keys.hmacShaKeyFor(
+        Decoders.BASE64.decode("MWE5ZjZiOGMzZDdlNGYyYTVjNmQ5ZTBiN2E0ZjNjMmUK"));
 
-        Jws<Claims> dJws = Jwts.parser()
-                .clockSkewSeconds(180) // 시계오차 오차 허용 시간 설정 3분, 5분이상이면 심각한 문제 -> 생성서버와 검증서버 시간차
-                .requireSubject("login") // 추가 검증.
-                .requireIssuer("24-mall")
-                .requireAudience("24-mall")
-                .keyLocator(jKeyLocator) // 동적키
-                .build()
-                .parseSignedClaims(loginToken);  // JWT 파싱
+    String accessToken = jwtProvider.createAccessToken(new AuthUser(1L,
+            Arrays.asList("gold")));
+
+    System.out.println("accessToken = " + accessToken);
 
 
-    }
+    // subject 오류
+    RuntimeException subjectException = assertThrows(RuntimeException.class, () -> {
+      Jwts.parser()
+          .clockSkewSeconds(180)
+          .requireSubject("wrongSubject")
+          .verifyWith(secretKey)
+          .build()
+          .parseSignedClaims(accessToken);
+    });
+    System.out.println("subject 오류 통과 = " + subjectException);
 
+    // issuer 오류
+    RuntimeException issuerException = assertThrows(RuntimeException.class, () -> {
+      Jwts.parser()
+          .clockSkewSeconds(180)
+          .requireSubject("1")
+          .requireIssuer("wrongIssuer")
+          .verifyWith(secretKey)
+          .build()
+          .parseSignedClaims(accessToken);
+    });
+    System.out.println("issuer 오류 통과 = " + issuerException);
+
+    // audience 오류
+    RuntimeException audienceException = assertThrows(RuntimeException.class, () -> {
+      Jwts.parser()
+          .clockSkewSeconds(180)
+          .requireSubject("1")
+          .requireIssuer("24-mall.com")
+          .requireAudience("wrongAudience")
+          .verifyWith(secretKey)
+          .build()
+          .parseSignedClaims(accessToken);
+    });
+    System.out.println("audience 오류 통과 = " + audienceException);
+  }
+
+
+  @Test
+  @DisplayName("automatic Reuse Detection")
+  void automaticReuseDetection() {
+    // 동일한 리프래쉬 토킁이 두번이상 사용되면 token family 무효화.
+    // 공격자가 탈취한 토큰을 사용하려 할 경우 모든 관련 토큰 무효화 접근 차단.
+    // localStorage x -> XSS 공격에 취약
+    // replay attack 최소화
+    // use https -> 네트워크 가로채기 방지
+    // 쿠키기반 세션 유지 -> silent authentication 사용 -> ux 향상
+    // 만료시간 적절히 설정 보안성과 사용자 경험 균형 유지
+  }
+
+
+  private String createRefreshToken() {
+    return "refresh token";
+  }
+
+  private SystemKey createMockSystemKey() {
+    return SystemKey.create(1L, "MWE5ZjZiOGMzZDdlNGYyYTVjNmQ5ZTBiN2E0ZjNjMmUK",
+        LocalDateTime.now(), true);
+  }
 
 }

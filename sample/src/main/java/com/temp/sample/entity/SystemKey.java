@@ -24,7 +24,7 @@ public class SystemKey {
   private Boolean isActive;
 
 
-  public static SystemKey createMock(Long id, String encKey, LocalDateTime createdAt, Boolean isActive) {
+  public static SystemKey create(Long id, String encKey, LocalDateTime createdAt, Boolean isActive) {
     SystemKey systemKey = new SystemKey();
     systemKey.id = id;
     systemKey.encKey = encKey;

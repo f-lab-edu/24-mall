@@ -48,4 +48,6 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// Byte Buddy 에이전트 경고 및 JVM 부트스트랩 클래스 경고 해결
+	//	jvmArgs '-XX:+EnableDynamicAgentLoading', '-Xshare:off'
 }
