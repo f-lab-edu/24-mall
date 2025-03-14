@@ -1,30 +1,27 @@
 package com.temp.sample.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-
-@Table(name = "product")
+@Table(name = "merchant")
 @Getter
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class Merchant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long merchantId;
 
     private String name;
 
-    private int price;
-
-    private LocalDateTime createdAt;
+    public static Merchant createMerchant(String name) {
+        Merchant merchant = new Merchant();
+        merchant.name = name;
+        return merchant;
+    }
 }

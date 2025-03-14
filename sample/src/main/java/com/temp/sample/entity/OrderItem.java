@@ -1,30 +1,34 @@
 package com.temp.sample.entity;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 
-@Table(name = "product")
+@Table(name = "order_product")
 @Getter
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private OrderInfo orderInfo;
 
-    private int price;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    private LocalDateTime createdAt;
+    private int quantity;
+
+    private int totalPrice;
+
+
 }
