@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum OrderStatus implements CommEnum {
+public enum OrderStatus implements LegacyEnum{
 
     APPLY("0", "주문접수"),
     APPROVAL("1", "주문승인"),
@@ -20,7 +20,7 @@ public enum OrderStatus implements CommEnum {
     private final String desc;
 
     public static OrderStatus of(String code) {
-        return CommEnum.of(values(), code);
+        return LegacyEnum.of(values(), code);
     }
 
 

@@ -20,4 +20,7 @@ public class Shipment {
 
     private String trackingNumber;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ShipmentStatus status;
 }

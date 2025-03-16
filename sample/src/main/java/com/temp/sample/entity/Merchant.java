@@ -24,11 +24,4 @@ public class Merchant {
         merchant.name = name;
         return merchant;
     }
-
-    public static Merchant createMockMerchant(Long id, String name) {
-        Merchant merchant = new Merchant();
-        merchant.merchantId = id;
-        merchant.name = name;
-        return merchant;
-    }
 }
