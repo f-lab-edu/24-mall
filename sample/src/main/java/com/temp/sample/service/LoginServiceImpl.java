@@ -6,7 +6,6 @@ import com.temp.sample.controller.request.LoginReq;
 import com.temp.sample.dao.UserRepository;
 import com.temp.sample.entity.User;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +27,10 @@ public class LoginServiceImpl implements LoginService {
     AuthUser authUser = new AuthUser(user.getId(),
         new ArrayList<>(List.of("bronze", "silver", "gold")));
 
-    String loginToken = jwtProvider.createLoginToken(authUser);
+    // todo 사용자 등급별 접속가능 경로 설정
+    //    String audience = "/premium";
+
+    String loginToken = jwtProvider.createAccessToken(authUser);
 
     return loginToken;
   }
