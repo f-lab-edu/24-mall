@@ -1,12 +1,12 @@
 package com.temp.sample.external;
 
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PaymentResponse {
+public class PaymentRequest {
+  private BigDecimal amount;
 
-  private Integer resultCode;
-  private String resultMessage;
 }
