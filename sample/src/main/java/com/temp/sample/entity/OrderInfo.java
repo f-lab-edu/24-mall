@@ -1,6 +1,8 @@
 package com.temp.sample.entity;
 
+import com.temp.sample.consts.OrderStatus;
 import com.temp.sample.entity.com.TimestampEntity;
+import com.temp.sample.entity.com.converter.OrderStatusConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,36 +19,38 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderInfo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String orderNumber;
+  @OneToMany(mappedBy = "order")
+  private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
+  @ManyToOne
+  @JoinColumn(name = "merchant_id")
+  private Merchant merchant;
 
-    @ManyToOne
-    private Merchant merchant;
+  @ManyToOne
+  private User user;
 
-    @ManyToOne
-    private User user;
+  private BigDecimal amount = BigDecimal.ZERO;
 
-    private BigDecimal amount = BigDecimal.ZERO;
+  private OrderStatus status;
 
-    @Embedded
-    private TimestampEntity timestamp;
+  @Embedded
+  private TimestampEntity timestamp;
 
-    public static OrderInfo createOrder(String orderNumber, Merchant merchant, User user, BigDecimal amount) {
+  public static OrderInfo createOrder(List<OrderItem> orderItems, Merchant merchant, User user,
+      BigDecimal amount) {
 
-        OrderInfo orderInfo = new OrderInfo();
+    OrderInfo orderInfo = new OrderInfo();
 
-        orderInfo.orderNumber = orderNumber;
-        orderInfo.merchant = merchant;
-        orderInfo.user = user;
-        orderInfo.amount = amount;
-        return orderInfo;
+    orderInfo.orderItems = orderItems;
+    orderInfo.merchant = merchant;
+    orderInfo.user = user;
+    orderInfo.amount = amount;
+    return orderInfo;
 
-    }
+  }
 
 }
