@@ -1,6 +1,8 @@
 package com.temp.sample.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jdk.jfr.Enabled;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +11,6 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Table(name = "product")
 @Getter
@@ -19,12 +20,8 @@ import java.util.List;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    private int price;
-
+    private BigDecimal price;
     private LocalDateTime createdAt;
 }
