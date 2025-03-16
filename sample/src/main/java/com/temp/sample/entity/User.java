@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,4 +27,12 @@ public class User {
     private String phoneNumber ;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public static User createUser(String email, String password, String phoneNumber) {
+        User user = new User();
+        user.email = email;
+        user.password = password;
+        user.phoneNumber = phoneNumber;
+        return user;
+    }
 }
