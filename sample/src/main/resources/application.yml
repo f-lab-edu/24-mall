@@ -4,10 +4,16 @@ spring:
     application:
         name: 24-mall
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/mall
-        username: root
-        password: root
+        master:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            jdbcUrl: jdbc:mysql://127.0.0.1:3306/mall
+            username: root
+            password: root
+        slave:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            jdbcUrl: jdbc:mysql://127.0.0.1:3307/mall
+            username: root
+            password: root
     jpa:
         open-in-view: false
         show-sql: true

@@ -27,19 +27,25 @@ public class JwtFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
 
-    // 로그인 요청이 아니면 authorization 검사
-    if (!request.getRequestURL().toString().endsWith("login")) {
+    String remoteAddr = request.getRemoteAddr();
 
-      String token = request.getHeader("Authorization");
+    if (!("127.0.0.1".equals(remoteAddr) || "0:0:0:0:0:0:0:1".equals(remoteAddr))) { // 로컬테스트 통과
 
-      if (StringUtils.isEmpty(token)) {
-        throw new RuntimeException("Token is empty");
+      // 로그인 요청이 아니면 authorization 검사
+      if (!request.getRequestURL().toString().endsWith("login")) {
+
+        String token = request.getHeader("Authorization");
+
+        if (StringUtils.isEmpty(token)) {
+          throw new RuntimeException("Token is empty");
+        }
+
+        AuthUser authUser = jwtProvider.readLoginToken(token);
+
+        request.setAttribute("userId", authUser.getUserId());
       }
-
-      AuthUser authUser = jwtProvider.readLoginToken(token);
-
-      request.setAttribute("userId", authUser.getUserId());
     }
+
 
     filterChain.doFilter(request, response);
 
