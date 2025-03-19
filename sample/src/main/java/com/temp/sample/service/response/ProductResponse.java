@@ -1,11 +1,9 @@
 package com.temp.sample.service.response;
 
-import com.temp.sample.controller.ApiResponse;
-import com.temp.sample.controller.CommonResult;
+import com.temp.sample.controller.response.ApiResponse;
 import com.temp.sample.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;

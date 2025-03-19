@@ -1,4 +1,4 @@
-package com.temp.sample.controller;
+package com.temp.sample.controller.response;
 
 import lombok.Getter;
 import lombok.ToString;

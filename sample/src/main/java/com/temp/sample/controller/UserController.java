@@ -1,6 +1,7 @@
 package com.temp.sample.controller;
 
 import com.temp.sample.controller.request.LoginReq;
+import com.temp.sample.controller.response.ApiResponse;
 import com.temp.sample.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
