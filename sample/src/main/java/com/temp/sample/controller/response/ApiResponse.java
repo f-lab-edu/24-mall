@@ -10,13 +10,8 @@ public class ApiResponse {
     private final String resultCode;
     private final String resultMsg;
 
-    public ApiResponse(){
-        this.resultCode = CommonResult.OK.getCode();
-        this.resultMsg = CommonResult.OK.getDesc();
-    }
-
-    public ApiResponse(CommonResult code) {
-        this.resultCode = code.getCode();
-        this.resultMsg = code.getDesc();
+    public ApiResponse(CommonResult commonResult) {
+        this.resultCode = commonResult.getCode();
+        this.resultMsg = commonResult.getDesc();
     }
 }
