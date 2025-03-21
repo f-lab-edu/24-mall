@@ -40,7 +40,7 @@ public class Product {
     @Embedded
     private TimestampEntity timestamp;
 
-    public static Product createProduct(String name, BigDecimal price, Integer stock) {
+    public static Product create(String name, BigDecimal price, Integer stock) {
         Product product = new Product();
         product.name = name;
         product.price = price;
