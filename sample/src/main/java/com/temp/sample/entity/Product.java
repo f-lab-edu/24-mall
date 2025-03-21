@@ -12,10 +12,12 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Table(name = "product")
 @Getter
+@Setter
 @Entity
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,23 +39,27 @@ public class Product {
 
     private LocalDateTime timeDealEndTime;
 
+    private Long merchantId;
+
     @Embedded
     private TimestampEntity timestamp;
 
-    public static Product create(String name, BigDecimal price, Integer stock) {
+    public static Product create(String name, BigDecimal price, Integer stock, Long merchantId) {
         Product product = new Product();
         product.name = name;
         product.price = price;
         product.stock = stock;
+        product.merchantId = merchantId;
         return product;
     }
 
-    public static Product createMockProduct(Long id, String name, BigDecimal price, Integer stock) {
+    public static Product createMock(Long id, String name, BigDecimal price, Integer stock, Long merchantId) {
         Product product = new Product();
         product.id = id;
         product.name = name;
         product.price = price;
         product.stock = stock;
+        product.merchantId = merchantId;
         return product;
     }
 
