@@ -8,6 +8,8 @@ import lombok.ToString;
 public class ApiResponse {
 
   public static final ApiResponse OK = new ApiResponse(CommonResult.OK);
+  public static final ApiResponse FAIL = new ApiResponse(CommonResult.FAIL);
+
   private final String resultCode;
   private final String resultMsg;
 
