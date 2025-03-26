@@ -66,9 +66,9 @@ class OrderServiceImplTest {
   void setUp() {
     // 테스트용 객체 생성
     mockUser = User.createMockUser(1L, "myng4291@naver.com", "1234", "01055555555");
-    mockMerchant = Merchant.createMockMerchant(1L, "휴대폰");
-    mockProducts.add(Product.createMockProduct(1L, "아이폰", BigDecimal.valueOf(10000), 10));
-    mockProducts.add(Product.createMockProduct(2L, "갤럭시", BigDecimal.valueOf(10000), 10));
+    mockMerchant = Merchant.createMock(1L, "휴대폰");
+    mockProducts.add(Product.createMock(1L, "아이폰", BigDecimal.valueOf(10000), 10, 1L));
+    mockProducts.add(Product.createMock(2L, "갤럭시", BigDecimal.valueOf(10000), 10, 1L));
 
     orderItemRequest = mockProducts.stream().map(product -> {
       return new OrderItemRequest(product.getId(), product.getStock());
@@ -88,7 +88,7 @@ class OrderServiceImplTest {
 
     assertDoesNotThrow(() -> orderService.processOrder(
         orderItemRequest,
-        mockMerchant.getMerchantId(),
+        mockMerchant.getId(),
         mockUser.getId(),
         LocalDateTime.now()
     ));
@@ -98,8 +98,8 @@ class OrderServiceImplTest {
   @Test
   @DisplayName("상품이 부족할 때 예외 발생 테스트")
   void processOrder_OutOfStockException() {
-    Product outOfStockProduct = Product.createMockProduct(1L, "아이폰", BigDecimal.valueOf(10000),
-        0);
+    Product outOfStockProduct = Product.createMock(1L, "아이폰", BigDecimal.valueOf(10000),
+        0, 1L);
     List<Product> insufficientStockProducts = List.of(outOfStockProduct);
 
     given(userRepository.findById(anyLong())).willReturn(Optional.of(mockUser));
@@ -110,7 +110,7 @@ class OrderServiceImplTest {
     OutOfStockException exception = assertThrows(OutOfStockException.class, () -> {
       orderService.processOrder(
           orderItemRequest,
-          mockMerchant.getMerchantId(),
+          mockMerchant.getId(),
           mockUser.getId(),
           LocalDateTime.now()
       );

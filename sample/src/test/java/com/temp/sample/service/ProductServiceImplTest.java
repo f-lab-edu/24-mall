@@ -1,7 +1,7 @@
 package com.temp.sample.service;
 
-import com.temp.sample.controller.ApiResponse;
-import com.temp.sample.controller.CommonResult;
+import com.temp.sample.controller.response.ApiResponse;
+import com.temp.sample.controller.response.CommonResult;
 import com.temp.sample.dao.ProductRepository;
 import com.temp.sample.entity.Product;
 import com.temp.sample.service.response.ProductResponse;
