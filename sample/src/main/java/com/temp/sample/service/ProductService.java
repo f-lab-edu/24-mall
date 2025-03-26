@@ -1,6 +1,8 @@
 package com.temp.sample.service;
 
-import com.temp.sample.service.request.ProductRequest;
+import com.temp.sample.service.request.ProductCreateReq;
+import com.temp.sample.service.request.ProductDeleteReq;
+import com.temp.sample.service.request.ProductUpdateReq;
 import com.temp.sample.service.response.ProductResponse;
 
 public interface ProductService {
@@ -9,9 +11,9 @@ public interface ProductService {
 
   ProductResponse readAll();
 
-  ProductResponse create(ProductRequest req);
+  ProductResponse create(ProductCreateReq req);
 
-  ProductResponse update(ProductRequest req);
+  ProductResponse update(ProductUpdateReq req);
 
-  ProductResponse delete(ProductRequest req);
+  ProductResponse delete(ProductDeleteReq req);
 }

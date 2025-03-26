@@ -1,11 +1,8 @@
 package com.temp.sample.controller;
 
-import com.temp.sample.service.request.ProductRequest;
-import com.temp.sample.service.response.ProductResponse;
+import com.temp.sample.service.request.ProductCreateReq;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestClient;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ProductControllerTest {
     RestClient restClient = RestClient.create("http://localhost:9000");
@@ -29,7 +26,7 @@ class ProductControllerTest {
             .body(String.class);
     }
 
-    String createProduct2(ProductRequest request) {
+    String createProduct2(ProductCreateReq request) {
         return restClient.post()
             .uri("/sample")
             .body(request)

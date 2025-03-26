@@ -9,9 +9,11 @@ import com.temp.sample.entity.ProductOption;
 import com.temp.sample.external.ImageClient;
 import com.temp.sample.external.ImageRequest;
 import com.temp.sample.external.ImageResponse;
-import com.temp.sample.service.request.ProductRequest;
-import com.temp.sample.service.request.ProductRequest.Image;
-import com.temp.sample.service.request.ProductRequest.Option;
+import com.temp.sample.service.request.ProductCreateReq;
+import com.temp.sample.service.request.ProductCreateReq.Image;
+import com.temp.sample.service.request.ProductCreateReq.Option;
+import com.temp.sample.service.request.ProductDeleteReq;
+import com.temp.sample.service.request.ProductUpdateReq;
 import com.temp.sample.service.response.ProductResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -49,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public ProductResponse create(ProductRequest req) {
+  public ProductResponse create(ProductCreateReq req) {
 
     // 상품등록
     Product savedProduct = productRepository.save(
@@ -70,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public ProductResponse update(ProductRequest req) {
+  public ProductResponse update(ProductUpdateReq req) {
 
     Product product = productRepository.findById(req.getProductId())
         .orElseThrow(() -> new NoSuchElementException("Product not found"));
@@ -114,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public ProductResponse delete(ProductRequest req) {
+  public ProductResponse delete(ProductDeleteReq req) {
 
     productRepository.deleteById(req.getProductId());
     productOptionRepository.deleteAllById(req.getOptions().stream().map(Option::getId).toList());

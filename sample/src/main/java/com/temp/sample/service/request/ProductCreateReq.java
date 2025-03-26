@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class ProductRequest {
+public class ProductCreateReq {
 
   private Long productId;
   private String name;
