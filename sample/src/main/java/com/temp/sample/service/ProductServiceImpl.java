@@ -18,6 +18,8 @@ import com.temp.sample.service.response.ProductResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +43,11 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional(readOnly = true)
-  public ProductResponse readAll() {
-    List<Product> all = productRepository.findAll();
+  public ProductResponse readAll(Pageable pageable) {
+    Page<Product> all = productRepository.findAll(pageable);
     return ProductResponse.builder()
-        .product(all)
-        .productCount(all.size())
+        .product(all.getContent())
+        .productCount(all.getSize())
         .build();
   }
 
