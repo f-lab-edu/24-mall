@@ -39,7 +39,7 @@ public class ProductController {
     return ApiResponse.OK;
   }
 
-  @PatchMapping("/product}")
+  @PatchMapping("/product")
   ApiResponse updateProduct(@RequestBody ProductRequest productRequest,
       HttpServletRequest httpRequest) {
 
@@ -51,7 +51,7 @@ public class ProductController {
     return ApiResponse.OK;
   }
 
-  @DeleteMapping("/product}")
+  @DeleteMapping("/product")
   ApiResponse deleteProduct(@RequestBody ProductRequest productRequest,
       HttpServletRequest httpRequest) {
 
